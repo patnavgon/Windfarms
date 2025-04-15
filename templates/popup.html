@@ -1,0 +1,30 @@
+<h4>
+    <%= obj["NAME"] %>    
+</h4>             
+<p>
+    <% if (obj["COUNTRY"]) { %>
+        Location: <%= obj["COUNTRY"] %><br />
+    <% } %>
+
+</p>
+
+<% if (obj["POWER_MW"]) { %>
+    <p>
+        <strong>POWER_MW</strong><br />
+        <%= obj["POWER_MW"] %>
+    </p>
+<% } %>
+
+<% if (obj["N_TURBINES"]) { %>
+    <p>
+        <strong>N_TURBINES</strong><br />
+        <%= obj["N_TURBINES"] %>
+    </p>
+<% } %>
+
+<% if (obj["YEAR"]) { %>
+    <p>
+        <strong>YEAR</strong><br />
+        <%= obj["YEAR"] %>
+    </p>
+<% } %>
