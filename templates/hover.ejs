@@ -1,0 +1,16 @@
+<strong>
+    <%= obj["NAME"] %>
+</strong><br />
+
+<% if (obj["N_TURBINES"]) { %>
+    Number of turbines: <%= obj["N_TURBINES"] %><br />
+<% } %>
+
+<% if (obj["COUNTRY"]) { %>
+    Location: <%= obj["COUNTRY"] %><br />
+<% } %>
+
+<% if (obj["POWER_MW"]) { %>
+    Capacity (Mw): <%= obj["POWER_MW"] %><br />
+<% } %>
+

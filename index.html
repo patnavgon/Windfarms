@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Offshore windfarm sites in the North-East Atlantic</title>
+
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content='The dataset on offshore wind farms in the European seas was created in 2014 by CETMAR for the European Marine Observation and Data Network (EMODnet). It is the result of the aggregation and harmonization of datasets provided by several sources. It is updated every year and it is available for viewing and download on EMODnet web portal (Human Activities, https://emodnet.ec.europa.eu/en/human-activities).' name='description'>
+    <meta content='Searchable Ocean Energy' name='Patricia Navarro Gonzalez'>
+
+    <!-- Facebook metadata -->
+    <meta content="Searchable Map Template - CSV" property="og:site_name">
+    <meta content="Searchable Map Template - CSV" property="og:title">
+    <meta content="website" property="og:type">
+    <meta content="You want to put your data on a searchable, filterable map. Provide a comma separated file (CSV) and this free, open source template will do the rest." property="og:description">
+    <meta content="https://searchable-map-template-csv.netlify.com/" property="og:url">
+    <meta content="https://searchable-map-template-csv.netlify.com/img/screenshot.jpg" property="og:image">
+    
+    <!-- Twitter metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@DataMadeCo">
+    <meta name="twitter:creator" content="@DataMadeCo">
+    <meta name="twitter:title" content="Searchable Map Template - CSV">
+    <meta name="twitter:url" content="https://searchable-map-template-csv.netlify.com/">
+    <meta name="twitter:description" content="You want to put your data on a searchable, filterable map. Provide a comma separated file (CSV) and this free, open source template will do the rest.">
+    <meta name="twitter:image:src" content="https://searchable-map-template-csv.netlify.com/img/screenshot.jpg">
+
+    <!-- Styles -->
+    <!-- Bootstrap cssS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/custom.css"/>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="lib/jquery-3.3.1.min.js"></script>
+    <script src="lib/popper.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
+    <script src="lib/ejs.min.js"></script>
+    <script src="lib/jquery.address.js"></script>
+    <script src="lib/jquery.csv.min.js"></script>
+    <script src="lib/moment.js"></script>
+    <script src="lib/geojson.min.js"></script>
+    <script src="js/csv-to-geojson.js"></script>
+
+    <!-- Leaflet and Google -->
+    <link rel="stylesheet" href="css/leaflet.css"/>
+    <script src="lib/leaflet.js"></script>
+    <script src='lib/turf.min.js'></script>
+    <script src="https://maps.google.com/maps/api/js?libraries=places&key=AIzaSyB0fuoGCdG3QpC0UpBq8vecinS_o0PgbyA"></script>
+    <script src="lib/Leaflet.GoogleMutant.js" ></script>
+    <script src="lib/leaflet-color-markers.js" ></script>
+    <script src="data/EMODnet_HA_Energy_WindFarms_pt.csv"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/searchable_map_lib.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/analytics_lib.js"></script>
+    
+    <!---clear multiple selection-->
+    <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-light mb-2">
+      <a class="navbar-brand" href="/">
+        Offshore windfarm sites in the North-East Atlantic
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse mr-auto" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+          <li class='nav-item'>
+            <a class="nav-link active" href="/"><i class="fa fa-map-marker" aria-hidden="true"></i> Map</a>
+          </li>
+          <li class='nav-item'>
+            <a class="nav-link" href="/about.html"><i class="fa fa-info-circle" aria-hidden="true"></i> About</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container-fluid">
+
+      <div class="row">
+        <!-- Sidebar (left) -->
+        <div class="col-md-4">
+          <p>The dataset on offshore wind farms in the European seas was created in 2014 by CETMAR for the European Marine Observation and Data Network (EMODnet). It is the result of the aggregation and harmonization of datasets provided by several sources. It is updated every year and it is available for viewing and download on EMODnet web portal (Human Activities, https://emodnet.ec.europa.eu/en/human-activities).
+
+          <div class="card bg-light">
+            <div class="card-body">
+              <div class='row'>
+                <div class="col-md-8">
+                  <div class="form-group">
+                    Near an address
+                    <input class='form-control' id='search-address' placeholder='Enter an address' type='text'>
+                  </div>
+                </div>
+    
+                <div class="col-md-4">
+                  <div class='form-group'>
+                    Within
+                    <select id='search-radius' class='form-control'>
+                      <option value='5000'>5 km</option>
+                      <option value='10000'>10 km</option>
+                      <option value='25000'>25 km</option>
+                      <option value='100000'>100 km</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+    
+              <div class='row'>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    Search by name
+                    <input class='form-control' id='search-name' placeholder='Enter a name' type='text'>
+                  </div>
+                </div>
+              </div>
+    
+              <div id="filters">
+    
+                <div class="form-group mb-3">
+                  <label for="status-filter">Filter by status </label>
+                  <select id="status-filter" class="form-control" multiple>
+                    <option value="">All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Dismantled">Dismantled</option>
+                    <option value="Planned">Planned</option>
+                    <option value="Production">Production</option>
+                    <option value="Construction">Under Construction</option>
+                    <option value="Test site">Test site</option>
+                  </select>
+                </div>
+                
+                <!-- <div class="form-group mb-3">
+                  <label for="power-range">Filter by Power (MW)</label>
+                  <input type="range" class="form-range" min="0" max="5500" step="10" id="power-range">
+                  <span id="power-value">Max: 5500 MW</span>
+                </div> -->
+                <div class="form-group mb-3">
+                  <label>Filter by Power (MW)</label>
+                  <div class="d-flex align-items-center">
+                    <input type="number" id="power-min" class="form-control me-2" value="0" style="max-width: 100px;">
+                    <span class="mx-2">to</span>
+                    <input type="number" id="power-max" class="form-control" value="5500" style="max-width: 100px;">
+                  </div>
+                </div>
+            
+                <button class='btn btn-primary' id="btnSearch"><i class='fa fa-search'></i> Search</button>
+                <a href="/" class='btn btn-secondary' id="btnReset" title="Reset"><i class="fa fa-repeat" aria-hidden="true"></i> Reset</a>
+                <button class='btn btn-dark' id='btnViewMode' title='Change view'><i class='fa fa-list'></i> List view</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Map and Results (right) -->
+        <div class="col-md-8">
+          <div id='mapCanvas' style="display: block; height: 1000px;"></div>
+          <div id="listCanvas" style="display: none">
+            <h2 class='list-header hidden-xs'>Search results <small id='list-result-count'></small></h2>
+    
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">NAME</th>
+                    <th scope="col">COUNTRY</th>
+                    <th scope="col">N_TURBINES</th>
+                    <th scope="col">POWER_MW</th>
+                  </tr>
+                </thead>
+                <tbody id='results-list'></tbody>
+              </table>
+            </div>
+          </div>
+            <!---Authorship-->
+            <p class='float-right'>
+              Author <a href='https://sites.google.com/imbrsea.eu/patricia-navarro-gonzalez/' target='_blank'>Patricia Navarro González</a>. 
+              Based on <a href='https://github.com/datamade/searchable-map-template-csv' target='_blank'>Searchable Map Template - CSV</a> by 
+              <a href='https://derekeder.com/' target='_blank'>Derek Eder</a> and 
+              <a href='https://datamade.us/' target='_blank'>DataMade</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal-pop" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="container-fluid bd-example-row">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span></button>
+                      <div id="modal-main"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <script type="text/javascript" src="js/map.js"></script>
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+      new Choices('#status-filter', { removeItemButton: true });
+    </script>
+    <script>
+      const powerSlider = document.getElementById("power-range");
+      const powerLabel = document.getElementById("power-value");
+    
+      powerSlider.addEventListener("input", function () {
+        powerLabel.textContent = "Max: " + powerSlider.value + " MW";
+      });
+    </script>
+    <!-- <style>
+      #legend {
+        position: absolute;
+        bottom:0;
+        right:0
+        /* z-index:1000;
+        margin-bottom:30px;
+        margin-right:10px;
+        background: white;
+        border-radius: 5px;
+        padding: 5px 10 px;
+         */
+      }
+    </style> -->
+  </body>
+</html>
