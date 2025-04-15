@@ -77,7 +77,8 @@ var SearchableMapLib = {
       // method that we will use to update the control based on feature properties passed
       var hover_template;
       $.get( "../templates/hover.html", function( template ) {
-        hover_template = template;
+        const html = ejs.render(template, { obj: properties });
+        $("#hover").html(html);
       });
       SearchableMapLib.info.update = function (props) {
         if (props) {
