@@ -232,7 +232,7 @@ legend.addTo(SearchableMapLib.map);
       $.get( "../templates/table-row.ejs", function( template ) {
           for (idx in SearchableMapLib.currentResults.features) {
             row_content = ejs.render(template, {obj: SearchableMapLib.currentResults.features[idx].properties});
-
+             $("#table-row").html(html);
             results.append(row_content);
           }
         });
