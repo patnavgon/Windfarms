@@ -76,9 +76,8 @@ var SearchableMapLib = {
 
       // method that we will use to update the control based on feature properties passed
       var hover_template;
-      $.get( "../templates/hover.ejs", function( template ) {
-        const html = ejs.render(template, { obj: properties });
-        $("#hover").html(html);
+      $.get( "templates/hover.ejs", function( template ) {
+        hover_template = template;
       });
       SearchableMapLib.info.update = function (props) {
         if (props) {
@@ -229,9 +228,10 @@ legend.addTo(SearchableMapLib.map);
     }
     else {
       var row_content;
-      $.get( "../templates/table-row.ejs", function( template ) {
+      $.get( "templates/table-row.ejs", function( template ) {
           for (idx in SearchableMapLib.currentResults.features) {
             row_content = ejs.render(template, {obj: SearchableMapLib.currentResults.features[idx].properties});
+
             results.append(row_content);
           }
         });
@@ -260,7 +260,7 @@ legend.addTo(SearchableMapLib.map);
       console.log(data);
     }
     var modal_content;
-    $.get( "../templates/popup.ejs", function( template ) {
+    $.get( "templates/popup.ejs", function( template ) {
         modal_content = ejs.render(template, {obj: data});
         $('#modal-pop').modal();
         $('#modal-main').html(modal_content);
@@ -328,16 +328,16 @@ legend.addTo(SearchableMapLib.map);
     //   });
     // }
     // -----custom power filter-----
-      var minPower = parseFloat($("#power-min").val());
-      var maxPower = parseFloat($("#power-max").val());
+      // var minPower = parseFloat($("#power-min").val());
+      // var maxPower = parseFloat($("#power-max").val());
 
-      SearchableMapLib.currentResults.features = $.grep(SearchableMapLib.currentResults.features, function(r) {
-        var power = parseFloat(r.properties["POWER_MW"]);
-          if (isNaN(power)) {
-           return false; // Exclude entries without power value
-          }
-        return power >= minPower && power <= maxPower;
-        });
+      // SearchableMapLib.currentResults.features = $.grep(SearchableMapLib.currentResults.features, function(r) {
+      //   var power = parseFloat(r.properties["POWER_MW"]);
+      //     if (isNaN(power)) {
+      //      return false; // Exclude entries without power value
+      //     }
+      //   return power >= minPower && power <= maxPower;
+      //   });
     // -----end power filter-----
     // -----end of custom filters-----
 
