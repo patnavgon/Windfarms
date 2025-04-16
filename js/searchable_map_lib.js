@@ -328,16 +328,16 @@ legend.addTo(SearchableMapLib.map);
     //   });
     // }
     // -----custom power filter-----
-      // var minPower = parseFloat($("#power-min").val());
-      // var maxPower = parseFloat($("#power-max").val());
+      var minPower = parseFloat($("#power-min").val());
+      var maxPower = parseFloat($("#power-max").val());
 
-      // SearchableMapLib.currentResults.features = $.grep(SearchableMapLib.currentResults.features, function(r) {
-      //   var power = parseFloat(r.properties["POWER_MW"]);
-      //     if (isNaN(power)) {
-      //      return false; // Exclude entries without power value
-      //     }
-      //   return power >= minPower && power <= maxPower;
-      //   });
+      SearchableMapLib.currentResults.features = $.grep(SearchableMapLib.currentResults.features, function(r) {
+        var power = parseFloat(r.properties["POWER_MW"]);
+          if (isNaN(power)) {
+           return false; // Exclude entries without power value
+          }
+        return power >= minPower && power <= maxPower;
+        });
     // -----end power filter-----
     // -----end of custom filters-----
 
